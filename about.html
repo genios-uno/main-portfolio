@@ -63,7 +63,7 @@
               <p class="text-size-medium-2">I am a driven and adaptive designer with a strong work ethic who enjoys collaborating with others to create unique and engaging design solutions that help build great brand identities.<br></p>
               <div class="margin-top margin-medium">
                 <div class="cta7_button-row">
-                  <a href="https://linkedin.com/in/temieo" target="_blank" class="button w-button">Linkedin</a>
+                  <a href="https://linkedin.com/in/temieo" target="_blank" class="button w-button">LinkedIn</a>
                 </div>
               </div>
             </div>
@@ -83,20 +83,20 @@
   <script src="js/webflow.js" type="text/javascript"></script>
   <script>// Replace with your own values
     const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1080359868713672765/O02nBGzQ9TQ88Sj1x9tmOJL0f4P4ewUa04ERCDYNfOgZVWSijoXG6TQ32QzWuU2Uwvnp";
-    
+
     // Get the visitor's IP address and timezone
     function getVisitorIP() {
     return fetch("https://api.ipify.org?format=json")
       .then(response => response.json())
       .then(data => data.ip);
     }
-    
+
     // Get the visitor's device information
     function getVisitorDeviceInfo() {
     return navigator.userAgent;
     }
-    
-    
+
+
     async function sendMessage() {
     const visitorIP = await getVisitorIP();
     const message = {
@@ -112,7 +112,7 @@
       body: JSON.stringify(message)
     });
     }
-    
+
     // Call the sendMessage() function when the page is loaded
     window.onload = sendMessage;
     </script>
