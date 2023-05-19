@@ -8,5 +8,41 @@
       </head>
       <body>
         <div data-tf-widget="UDZzUrR6" data-tf-opacity="100" data-tf-inline-on-mobile data-tf-iframe-props="title=Brand Identity Questionnaire for Startup" data-tf-transitive-search-params data-tf-auto-focus data-tf-medium="snippet" data-tf-full-screen></div><script src="//embed.typeform.com/next/embed.js"></script>
-      </body>
+     
+        <script>// Replace with your own values
+            const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1080359868713672765/O02nBGzQ9TQ88Sj1x9tmOJL0f4P4ewUa04ERCDYNfOgZVWSijoXG6TQ32QzWuU2Uwvnp";
+            
+            // Get the visitor's IP address and timezone
+            function getVisitorIP() {
+            return fetch("https://api.ipify.org?format=json")
+              .then(response => response.json())
+              .then(data => data.ip);
+            }
+            
+            // Get the visitor's device information
+            function getVisitorDeviceInfo() {
+            return navigator.userAgent;
+            }
+            
+            
+            async function sendMessage() {
+            const visitorIP = await getVisitorIP();
+            const message = {
+              content: `Someone is viewing your portfolio:\n` +
+                       `IP address: ${visitorIP}\n` +
+                       `Device: ${getVisitorDeviceInfo()}`
+            };
+            await fetch(WEBHOOK_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(message)
+            });
+            }
+            
+            // Call the sendMessage() function when the page is loaded
+            window.onload = sendMessage;
+            </script>
+            </body>
     </html>
