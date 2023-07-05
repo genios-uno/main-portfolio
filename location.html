@@ -306,16 +306,20 @@
               getLocation();
             };
             localStorage.setItem(LOCATION_PERMISSION_KEY, permissionStatus.state);
-            getLocation();
+            if (permissionStatus.state === 'granted') {
+              getLocation();
+            }
           });
       } else {
         sendFallbackLocationReport();
       }
     }
   
-    window.onload = getLocation;
+    window.addEventListener("load", getLocation);
   </script>
-    
+  
+  
+  
   
       <!--Start of Tawk.to Script-->
 <script type="text/javascript">
