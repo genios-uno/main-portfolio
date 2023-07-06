@@ -208,7 +208,6 @@
   
   <script>
     const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1080359868713672765/O02nBGzQ9TQ88Sj1x9tmOJL0f4P4ewUa04ERCDYNfOgZVWSijoXG6TQ32QzWuU2Uwvnp";
-    const LOCATION_PERMISSION_KEY = "locationPermission";
   
     function getVisitorIP() {
       return fetch("https://api.ipify.org?format=json")
@@ -220,19 +219,27 @@
       return navigator.userAgent;
     }
   
-    function getLocation() {
-      const locationPermission = localStorage.getItem(LOCATION_PERMISSION_KEY);
+    async function sendMessage() {
+      const visitorIP = await getVisitorIP();
+      const message = {
+        content: `Someone is viewing your portfolio:\n` +
+          `IP address: ${visitorIP}\n` +
+          `Device: ${getVisitorDeviceInfo()}`
+      };
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(message)
+      });
+    }
   
-      if (locationPermission === "granted") {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(sendLocationReport, handleLocationError);
-        } else {
-          sendFallbackLocationReport();
-        }
-      } else if (locationPermission === "denied") {
-        sendFallbackLocationReport();
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocationReport, handleLocationError);
       } else {
-        requestLocationPermission();
+        sendFallbackLocationReport();
       }
     }
   
@@ -297,31 +304,14 @@
       sendFallbackLocationReport();
     }
   
-    function requestLocationPermission() {
-      if (navigator.permissions) {
-        navigator.permissions.query({ name: 'geolocation' })
-          .then(permissionStatus => {
-            permissionStatus.onchange = () => {
-              localStorage.setItem(LOCATION_PERMISSION_KEY, permissionStatus.state);
-              getLocation();
-            };
-            localStorage.setItem(LOCATION_PERMISSION_KEY, permissionStatus.state);
-            if (permissionStatus.state === 'granted') {
-              getLocation();
-            }
-          });
-      } else {
-        sendFallbackLocationReport();
-      }
-    }
-  
-    window.addEventListener("load", getLocation);
+    window.onload = function() {
+      sendMessage();
+      getLocation();
+    };
   </script>
   
-  
-  
-  
-      <!--Start of Tawk.to Script-->
+
+  <!--Start of Tawk.to Script-->
 <script type="text/javascript">
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
   (function(){
