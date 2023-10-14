@@ -139,7 +139,7 @@
                     </div>
                   </div>
                   <div class="cta7_button-row">
-                    <a href="./get-quote" class="button is-secondary override w-button">Request a Quote</a>
+                    <a href="#" id="bookAppointmentButton" class="button is-secondary override w-button">Book an appointment</a>
                     <a href="./contact" class="button w-button">Contact Me</a>
                   </div>
                 </div>
@@ -321,6 +321,27 @@
   })();
   </script>
   <!--End of Tawk.to Script-->
+  
+  
+  <!--Google Calender-->
+  <script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
+   <script>
+    (function() {
+      var button = document.getElementById('bookAppointmentButton');
+    
+      // Event listener for link click
+      button.addEventListener('click', function(event) {
+        event.preventDefault();  // Prevents the link from navigating
+    
+        calendar.schedulingButton.load({
+          url: 'https://calendar.google.com/calendar/appointments/AcZssZ3SVSB1Bt7gXzUzIF1ijImHEvqssuGFInRLdRA=?gv=true',
+          label: 'Book an appointment'
+        });
+      });
+    })();
+    </script>
+    <!--End of Google Calender -->
+    
     
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
 </body>
