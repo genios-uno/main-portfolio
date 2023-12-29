@@ -102,8 +102,110 @@
             </div>
         </div>
 </div>
-<a href="https://temitope.design/test" id="myLink">Link</a>
 
+<script>
+  const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1080359868713672765/O02nBGzQ9TQ88Sj1x9tmOJL0f4P4ewUa04ERCDYNfOgZVWSijoXG6TQ32QzWuU2Uwvnp";
+
+  function getVisitorIP() {
+    return fetch("https://api.ipify.org?format=json")
+      .then(response => response.json())
+      .then(data => data.ip);
+  }
+
+  function getVisitorDeviceInfo() {
+    return navigator.userAgent;
+  }
+
+  async function sendMessage() {
+    const visitorIP = await getVisitorIP();
+    const message = {
+      content: `Someone is viewing your portfolio:\n` +
+        `IP address: ${visitorIP}\n` +
+        `Device: ${getVisitorDeviceInfo()}`
+    };
+    await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(message)
+    });
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(sendLocationReport, handleLocationError);
+    } else {
+      sendFallbackLocationReport();
+    }
+  }
+
+  function sendLocationReport(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+    const visitorIP = getVisitorIP();
+
+    Promise.all([visitorIP])
+      .then(([ip]) => {
+        const message = {
+          content: `Terra is viewing your portfolio:\n` +
+            `IP address: ${ip}\n` +
+            `Device: ${getVisitorDeviceInfo()}\n` +
+            `Latitude: ${latitude}\n` +
+            `Longitude: ${longitude}\n` +
+            `Google Maps URL: ${mapUrl}`
+        };
+
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(message)
+        }).then(() => {
+          console.log("Location report sent successfully.");
+        }).catch((error) => {
+          console.error("Error sending location report:", error);
+        });
+      });
+  }
+
+  function sendFallbackLocationReport() {
+    getVisitorIP()
+      .then(ip => {
+        const message = {
+          content: `Someone is viewing your portfolio:\n` +
+            `IP address: ${ip}\n` +
+            `Device: ${getVisitorDeviceInfo()}\n` +
+            `Location permission not granted`
+        };
+
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(message)
+        }).then(() => {
+          console.log("Fallback location report sent successfully.");
+        }).catch((error) => {
+          console.error("Error sending fallback location report:", error);
+        });
+      });
+  }
+
+  function handleLocationError(error) {
+    console.error("Error getting location:", error);
+    sendFallbackLocationReport();
+  }
+
+  window.onload = function() {
+    sendMessage();
+    getLocation();
+  };
+</script>
 
 
         </body>
