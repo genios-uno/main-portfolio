@@ -104,7 +104,13 @@
 </div>
 <a href="https://temitope.design/test" id="myLink">Link</a>
 
-
+<script>
+document.getElementById("myLink").addEventListener("click", function(event) {
+  event.preventDefault();
+  var encodedURL = encodeURIComponent("https://temitope.design/test]");
+  window.open(encodedURL, "_blank");
+});
+</script>
 
         </body>
 </html>
